@@ -1,0 +1,47 @@
+
+#board-area{
+    height: 60vh;
+    border: 3px solid black;
+
+    display: grid;
+    grid-template-rows: 1fr 1fr 8fr;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+#board-area > div {
+    border: 1px dashed black;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+#board-area > div:not(:last-child){
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+
+    font-size: 1.2rem;
+    font-weight: 900;
+}
+
+#title-area{
+    grid-column: span 2;
+}
+
+#content-area{
+    grid-column: span 3;
+
+    padding: 40px;
+}
+
+.main-footer{
+    display: flex;
+    justify-content: center;
+}
+
+.board-img-area{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}

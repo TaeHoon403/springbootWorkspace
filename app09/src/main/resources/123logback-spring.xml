@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 파일로 남는 로그의 설정 -->
+    <appender name="fa" class="ch.qos.logback.core.FileAppender">
+        <file>D:/dev/khapp.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 콘솔에 작성되는 로그의 설정 -->
+    <appender name="ca" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 위에서 작성한 로그 설정 정보를 적용 -->
+    <root>
+        <appender-ref ref="fa"/>
+        <appender-ref ref="ca"/>
+    </root>
+</configuration>

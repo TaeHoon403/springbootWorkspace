@@ -1,0 +1,20 @@
+header {
+    width: 100%;
+    height: 150px;
+
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+.logo {
+    background-image: url('/img/logo.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: rgb(255,255,128);
+}
+
+.logo:hover {
+    cursor: pointer;
+}

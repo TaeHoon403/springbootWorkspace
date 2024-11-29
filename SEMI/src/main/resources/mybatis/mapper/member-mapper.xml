@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kh.SEMI.member.mapper.MemberMapper">
+    <update id="edit">
+        UPDATE MEMBER
+        SET
+            MODIFY_DATE = SYSDATE
+            <if test="pwd != null">
+                , PWD = #{pwd}
+            </if>
+            <if test="nick != null">
+                , NICK = #{nick}
+            </if>
+        WHERE NO = #{no}
+        AND DEL_YN = 'N'
+    </update>
+</mapper>

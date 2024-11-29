@@ -1,0 +1,47 @@
+h1 {
+    text-align: center;
+}
+
+main .table-area {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+
+    background-color: white;
+
+    height: 60vh;
+}
+
+main .table-area tbody tr:hover{
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
+.page-area {
+    height: 50px;
+    border: 1px solid black;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-area > a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 50px;
+    height: 50px;
+
+    border: 1px solid black;
+    background-color: darkgrey;
+    color: white;
+    text-decoration: none;
+}
+
+.main-bottom-area {
+    display: flex;
+    justify-content: end;
+}
