@@ -110,9 +110,9 @@ setBoardList();
 function handleSearchType(x){
 
     // 요소 가져오기 -  제목 검색
-    const titleTag = document.querySelector("input[name=searchValue");
+    const titleTag = document.querySelector("input[name=searchValue]");
     // 요소 가져오기 -  카테고리 검색
-    const categoryTag = document.querySelector("select[name=searchValue");
+    const categoryTag = document.querySelector("select[name=searchValue]");
 
     // searchType 값에 따라서 searchValue 항목 중 하나를 disabled 상태로 만든다
     if(x.value == "title"){

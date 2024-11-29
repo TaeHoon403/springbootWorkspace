@@ -5,6 +5,7 @@ import com.kh.SEMI.util.page.PageVo;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -76,5 +77,14 @@ public interface NoticeMapper {
             AND N.DEL_YN = 'N'
             """)
     NoticeVo noticeByNo(String no);
-    
-}
+
+    // 공지사항 삭제
+    @Update("""
+            UPDATE NOTICE
+            SET
+                DEL_YN = 'Y'
+            WHERE NO IN(${x})
+            """)
+    int delete(String x);
+
+}//interface

@@ -45,3 +45,20 @@ main .table-area tbody tr:hover{
     display: flex;
     justify-content: end;
 }
+
+/* main .table-area tbody input[name=del]{
+    width: 100%;
+    height: 100%;
+} */
+
+.checkbox-td {
+    width: 25px;
+    height: 25px;
+    place-content: center center;
+}
+
+.checkbox-td input {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}

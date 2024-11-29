@@ -29,6 +29,7 @@
         <h1>공지사항</h1>
         <hr>
         <div class="main-bottom-area">
+            <button onclick="deleteNotice();">삭제</button>
             <c:if test="${loginAdminVo != null}">
                 <button onclick="location.href='/notice/write'">공지사항 작성</button>
             </c:if>
@@ -48,6 +49,9 @@
                         <th>작성자</th>
                         <th>조회수</th>
                         <th>작성일</th>
+                        <th><input type="checkbox" onclick="handleCheckBox(this);"></th>
+                        <c:if test="${loginAdminVo != null}">
+                        </c:if>
                     </tr>
                 </thead>
                 <tbody onclick="">
@@ -58,6 +62,9 @@
                             <td>${vo.writerNick}</td>
                             <td>${vo.hit}</td>
                             <td>${vo.createDate}</td>
+                            <td class="checkbox-td"><input type="checkbox" name="del"></td>
+                            <c:if test="${loginAdminVo != null}">
+                            </c:if>
                         </tr>
                     </c:forEach>
                 </tbody>

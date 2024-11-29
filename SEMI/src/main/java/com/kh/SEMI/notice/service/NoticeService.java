@@ -50,4 +50,12 @@ public class NoticeService {
         return mapper.noticeByNo(no);
     }//detail
 
+    // 공지사항 삭제
+    public int delete(List<String> noticeNoList) {
+
+        String x = String.join(",",noticeNoList);
+
+        return mapper.delete(x);
+    }//delete
+
 }//class

@@ -1,5 +1,7 @@
 package com.kh.SEMI.notice.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.SEMI.admin.vo.AdminVo;
 import com.kh.SEMI.notice.service.NoticeService;
 import com.kh.SEMI.notice.vo.NoticeVo;
@@ -9,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +21,7 @@ import java.util.List;
 @Slf4j
 public class NoticeController {
 
+    private final ObjectMapper objectMapper;
     private final NoticeService service;
 
     // 공지사항 작성 화면 이동
@@ -97,14 +97,31 @@ public class NoticeController {
 
     }//detail
 
+    // 공지사항 삭제 처리
+    @DeleteMapping("delete")
+    @ResponseBody
+    public String delete(String noticeNoArr) throws JsonProcessingException {
+
+        // 삭제할 공지사항 번호 리스트로 변환
+        List<String> noticeNoList = objectMapper.readValue(noticeNoArr, List.class);
+
+        // service 호출
+        int result = service.delete(noticeNoList);
+
+        // 예외처리
+        if (result != noticeNoList.size()){
+            return "fail";
+        }
+
+        // 결과 반환
+        return "success";
+
+    }//delete
+
+
     // 공지사항 수정 화면 이동
 
 
     // 공지사항 수정 처리
-
-
-    // 공지사항 삭제 처리
-
-
 
 }//class
