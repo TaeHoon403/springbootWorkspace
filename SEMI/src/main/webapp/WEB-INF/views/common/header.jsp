@@ -29,10 +29,15 @@
             <br>
             <a href="/member/logout">로그아웃</a>
         </c:if>
-        <c:if test="${loginInfo == null}">
+        <c:if test="${loginAdminVo != null}">
+            <a href="/admin/logout">관리자 로그아웃</a>
+        </c:if>
+        <c:if test="${loginAdminVo == null && loginInfo == null}">
             <a href="/member/join">회원가입</a>
             <br>
             <a href="/member/login">로그인</a>
+            <br>
+            <a href="/admin/login">관리자 로그인</a>
         </c:if>
     </div>
 </header>

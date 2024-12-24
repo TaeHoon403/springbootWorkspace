@@ -43,4 +43,12 @@ public class AdminController {
         
     }//login
 
+    // 관리자 로그아웃
+    @GetMapping("logout")
+    public String logout(HttpSession session){
+        session.removeAttribute("loginAdminVo");
+        session.setAttribute("alertMsg","관리자 로그아웃");
+        return "redirect:/home";
+    }//logout
+
 }//class

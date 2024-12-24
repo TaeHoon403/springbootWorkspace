@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kbo.player.PlayerMapper">
+
+    <update id="editPlayerInfo">
+        UPDATE PLAYER
+        <set>
+            <if test="name != null">
+                NAME = #{name},
+            </if>
+            <if test="team != null">
+                TEAM = #{team},
+            </if>
+            <if test="position != null">
+                POSITION = #{position},
+            </if>
+            <if test="backNumber != null">
+                BACK_NUMBER = #{backNumber},
+            </if>
+            <if test="debutDate != null">
+                DEBUT_DATE = #{debutDate},
+            </if>
+            <if test="retiredYn != null">
+                RETIRED_YN = #{retiredYn}
+            </if>
+        </set>
+        WHERE NO = #{no}
+    </update>
+
+</mapper>

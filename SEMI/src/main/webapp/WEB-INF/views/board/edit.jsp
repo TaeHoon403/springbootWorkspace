@@ -15,6 +15,7 @@
         <%@ include file="/WEB-INF/views/common/header.jsp" %>
         <%@ include file="/WEB-INF/views/common/nav.jsp" %>
         <h1>게시글 수정</h1>
+        <hr>
         <form action="/board/edit" method="post" enctype="multipart/form-data">
             <input type="hidden" name="no" value="${vo.no}">
             <input type="text" name="title" placeholder="제목" value="${vo.title}">

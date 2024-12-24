@@ -1,5 +1,6 @@
 package com.kh.SEMI.notice.mapper;
 
+import com.kh.SEMI.admin.vo.NoticeReplyVo;
 import com.kh.SEMI.notice.vo.NoticeVo;
 import com.kh.SEMI.util.page.PageVo;
 import org.apache.ibatis.annotations.Insert;
@@ -76,7 +77,7 @@ public interface NoticeMapper {
             WHERE N.NO = #{no}
             AND N.DEL_YN = 'N'
             """)
-    NoticeVo noticeByNo(String no);
+    NoticeVo getNoticeByNo(String no);
 
     // 공지사항 삭제
     @Update("""
@@ -86,5 +87,55 @@ public interface NoticeMapper {
             WHERE NO IN(${x})
             """)
     int delete(String x);
+
+    //공지사항 수정
+    @Update("""
+            UPDATE NOTICE
+            SET
+                TITLE = #{title}
+                , CONTENT = #{content}
+            WHERE NO = #{no}
+            AND DEL_YN = 'N'
+            AND WRITER_NO = #{writerNo}
+            """)
+    int edit(NoticeVo vo);
+
+    // 공지사항 댓글 작성
+    @Insert("""
+            INSERT INTO NOTICE_REPLY
+            (
+                NO
+                , CONTENT
+                , REF_NO
+                , WRITER_NO
+            )
+            VALUES
+            (
+                SEQ_NOTICE_REPLY.NEXTVAL
+                , #{content}
+                , #{refNo}
+                , #{writerNo}
+            )
+            """)
+    int replyWrite(NoticeReplyVo vo);
+
+
+    // 공지사항 댓글 목록 조회
+    @Select("""
+            SELECT
+                NR.NO
+                , NR.CONTENT
+                , NR.REF_NO
+                , NR.WRITER_NO
+                , M.NICK AS WRITER_NICK
+                , NR.CREATE_DATE
+                , NR.DEL_YN
+            FROM NOTICE_REPLY NR
+            JOIN MEMBER M ON (NR.WRITER_NO = M.NO)
+            WHERE NR.REF_NO = #{noticeNo}
+            AND NR.DEL_YN = 'N'
+            ORDER BY NR.CREATE_DATE DESC
+            """)
+    List<NoticeReplyVo> getNoticeReplyList(String noticeNo);
 
 }//interface

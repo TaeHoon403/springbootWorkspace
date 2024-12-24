@@ -1,5 +1,6 @@
 package com.kh.SEMI.notice.service;
 
+import com.kh.SEMI.admin.vo.NoticeReplyVo;
 import com.kh.SEMI.notice.mapper.NoticeMapper;
 import com.kh.SEMI.notice.vo.NoticeVo;
 import com.kh.SEMI.util.page.PageVo;
@@ -46,8 +47,8 @@ public class NoticeService {
     }//getNoticeCnt
     
     // 공지사항 상세 조회
-    public NoticeVo noticeByNo(String no) {
-        return mapper.noticeByNo(no);
+    public NoticeVo getNoticeByNo(String no) {
+        return mapper.getNoticeByNo(no);
     }//detail
 
     // 공지사항 삭제
@@ -57,5 +58,20 @@ public class NoticeService {
 
         return mapper.delete(x);
     }//delete
+
+    // 공지사항 수정
+    public int edit(NoticeVo vo) {
+        return mapper.edit(vo);
+    }//edit
+
+    // 공지사항 댓글 작성
+    public int replyWrite(NoticeReplyVo vo) {
+        return mapper.replyWrite(vo);
+    }//replyWrite
+
+    // 공지사항 댓글 목록 조회
+    public List<NoticeReplyVo> getNoticeReplyList(String noticeNo) {
+        return mapper.getNoticeReplyList(noticeNo);
+    }//getNoticeReplyList
 
 }//class

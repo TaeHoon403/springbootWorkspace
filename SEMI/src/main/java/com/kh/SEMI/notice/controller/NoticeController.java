@@ -3,6 +3,8 @@ package com.kh.SEMI.notice.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.SEMI.admin.vo.AdminVo;
+import com.kh.SEMI.admin.vo.NoticeReplyVo;
+import com.kh.SEMI.member.vo.MemberVo;
 import com.kh.SEMI.notice.service.NoticeService;
 import com.kh.SEMI.notice.vo.NoticeVo;
 import com.kh.SEMI.util.page.PageVo;
@@ -64,7 +66,7 @@ public class NoticeController {
 
     // 공지사항 목록 조회 처리 + 검색
     @GetMapping("list")
-    public String list(@RequestParam(name = "pno", defaultValue="1") int currentPage, Model model , String searchValue){
+    public String list(@RequestParam(name = "pno", defaultValue = "1") int currentPage, Model model , String searchValue){
 
         // 페이징 처리
         int listCount = service.getNoticeCnt(searchValue);
@@ -89,7 +91,7 @@ public class NoticeController {
     public String detail (String no, Model model){
 
         // service 호출
-        NoticeVo vo = service.noticeByNo(no);
+        NoticeVo vo = service.getNoticeByNo(no);
         model.addAttribute("vo",vo);
 
         // 화면 이동
@@ -118,10 +120,70 @@ public class NoticeController {
 
     }//delete
 
-
     // 공지사항 수정 화면 이동
+    @GetMapping("edit")
+    public void edit(Model model, String no){
 
+        // service 호출
+        NoticeVo vo = service.getNoticeByNo(no);
+        model.addAttribute("vo",vo);
+
+    }//edit
 
     // 공지사항 수정 처리
+    @PostMapping("edit")
+    public String edit(NoticeVo vo, HttpSession session){
+
+        // 로그인한 관리자 정보 수집
+        AdminVo loginInfo = (AdminVo) session.getAttribute("loginAdminVo");
+        vo.setWriterNo(loginInfo.getNo());
+
+        // service 호출
+        int result = service.edit(vo);
+        
+        // 예외처리
+        if(result != 1){
+            throw new IllegalStateException("공지사항 수정 중 오류 발생");
+        }
+        
+        // 결과 반환
+        return "redirect:/notice/detail?no="+vo.getNo();
+
+    }//edit
+    
+    // 공지사항 댓글 작성
+    @PostMapping("reply/write")
+    @ResponseBody
+    public int replyWrite(NoticeReplyVo vo, HttpSession session){
+
+        // 작성자 정보 수집
+        MemberVo loginInfo = (MemberVo) session.getAttribute("loginInfo");
+        if(loginInfo == null){
+            AdminVo loginAdminInfo = (AdminVo) session.getAttribute("loginAdminVo");
+            vo.setWriterNo(loginAdminInfo.getNo());
+        }else{
+            vo.setWriterNo(loginInfo.getNo());
+        }
+
+        // service 호출
+        int result = service.replyWrite(vo);
+        
+        // 결과 반환
+        return result;
+
+    }//replyWrite
+
+    // 공지사항 댓글 목록 조회
+    @GetMapping("reply/list")
+    @ResponseBody
+    public List<NoticeReplyVo> getNoticeReplyList(String noticeNo){
+
+        // service 호출
+        List<NoticeReplyVo> noticeReplyVoList = service.getNoticeReplyList(noticeNo);
+
+        // 결과 반환
+        return noticeReplyVoList;
+
+    }//getNoticeReplyList
 
 }//class
