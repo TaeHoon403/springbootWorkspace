@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Home</title>
+  </head>
+  <body>
+    <h1>홈 페이지</h1>
+    <hr />
+    <div
+      style="
+        width: 300px;
+        height: 700px;
+        border: 1px solid black;
+        overflow-y: scroll;
+      "
+      id="textArea"
+    ></div>
+    <hr />
+    <form action="" onsubmit="return send();">
+      <input type="text" id="content" />
+      <button>보내기</button>
+    </form>
+    <hr />
+    <button onclick="joinChat();">채팅방 들어가기</button>
+    <button onclick="endChat();">채팅방 나가기</button>
+  </body>
+</html>
+
+<script>
+  // websocket 연결
+  const socket = new WebSocket("ws://127.0.0.1:8080/kh-chat");
+  const joinChat = () => {
+    // socket =
+  };
+
+  // websocket 사용
+  // 메세지 전달
+  const send = (evt) => {
+    // evt.preventDefault();
+    const txt = document.querySelector("#content").value;
+    socket.send(txt);
+    document.querySelector("#content").value = null;
+    return false;
+  };
+  // 메세지 수신
+  socket.onmessage = (evt) => {
+    console.log(evt);
+    const aa = document.querySelector("#textArea");
+    const bb = aa.innerHTML;
+    // if(evt.origin"127.0.0.1")
+    document.querySelector("#textArea").innerHTML = bb + "<br/>" + evt.data;
+    aa.scrollTop = aa.scrollHeight;
+  };
+
+  // websocket 연결 종료
+  const endChat = () => {
+    socket.close();
+  };
+</script>
