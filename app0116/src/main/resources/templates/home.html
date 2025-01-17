@@ -3,19 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <title>Home</title>
-  </head>
-  <body>
-    <h1>홈 페이지</h1>
-    <hr />
-    <div
-      style="
+    <style>
+      #textArea {
         width: 300px;
         height: 700px;
         border: 1px solid black;
         overflow-y: scroll;
-      "
-      id="textArea"
-    ></div>
+      }
+      .msg {
+        width: 283px;
+        word-wrap: break-word;
+      }
+      #date {
+        font-size: x-small;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>KH Chat!!~</h1>
+    <hr />
+    <div id="textArea"></div>
     <hr />
     <form action="" onsubmit="return send();">
       <input type="text" id="content" />
@@ -29,7 +36,7 @@
 
 <script>
   // websocket 연결
-  const socket = new WebSocket("ws://127.0.0.1:8080/kh-chat");
+  const socket = new WebSocket("ws://3.84.225.46:8080/kh-chat");
   const joinChat = () => {
     // socket =
   };
@@ -38,19 +45,30 @@
   // 메세지 전달
   const send = (evt) => {
     // evt.preventDefault();
-    const txt = document.querySelector("#content").value;
-    socket.send(txt);
+    const msg = document.querySelector("#content").value;
+    const msgObj = {
+      nick: "a",
+      content: msg,
+    };
+    socket.send(JSON.stringify(msgObj));
     document.querySelector("#content").value = null;
     return false;
   };
+
   // 메세지 수신
   socket.onmessage = (evt) => {
     console.log(evt);
-    const aa = document.querySelector("#textArea");
-    const bb = aa.innerHTML;
-    // if(evt.origin"127.0.0.1")
-    document.querySelector("#textArea").innerHTML = bb + "<br/>" + evt.data;
-    aa.scrollTop = aa.scrollHeight;
+    const data = JSON.parse(evt.data);
+    const chatBox = document.querySelector("#textArea");
+
+    chatBox.innerHTML += `<div class="msg">
+        <b>${data.nick}</b>
+        <br/>
+        <span id="msg">${data.content}</span>
+        <br/>
+        <span id="date">${data.time}</span>
+      </div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
   };
 
   // websocket 연결 종료
