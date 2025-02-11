@@ -1,6 +1,7 @@
 package com.kh.app0131.member;
 
 import com.kh.app0131.encode.KhEncoder;
+import com.kh.app0131.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,8 @@ public class MemberService {
     private final MemberMapper mapper;
 //    private final KhEncoder encoder;
     private final BCryptPasswordEncoder encoder;
+
+    private final JwtUtil jwtUtil;
 
     // 회원가입
     public int join(MemberVo vo) {
@@ -35,13 +38,14 @@ public class MemberService {
         if(!encoder.matches(vo.getPwd(), dbVo.getPwd())){
             throw new IllegalStateException("로그인 실패..");
         }
-        
+
         // 토큰 발행
-        String secretKey = "dlrjsskaksdksmsrkqt"; // dlrjsskaksdksmsrkqt = 이건나만아는값
+        return jwtUtil.createToken( dbVo.getNo(), dbVo.getNick(), (1000*60*15));
+
+        /*String secretKey = "dlrjsskaksdksmsrkqt"; // dlrjsskaksdksmsrkqt = 이건나만아는값
         String encodeDate = encoder.encode(dbVo.getNo()+dbVo.getNick()+secretKey);
         String token = "kh "+dbVo.getNo()+"!@#"+dbVo.getNick()+"!@#"+encodeDate;
-
-        return token;
+        return token;*/
 
     }//login
 

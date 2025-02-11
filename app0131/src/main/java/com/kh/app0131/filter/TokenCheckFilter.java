@@ -1,5 +1,6 @@
 package com.kh.app0131.filter;
 
+import com.kh.app0131.jwt.JwtUtil;
 import com.kh.app0131.member.MemberVo;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import java.io.IOException;
 public class TokenCheckFilter implements Filter {
 
     private final BCryptPasswordEncoder encoder;
+    private final JwtUtil jwtUtil;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -33,7 +35,7 @@ public class TokenCheckFilter implements Filter {
         if(token == null){
             throw new  IllegalStateException("토큰 확인 실패");
         }
-
+        /*
         // 2. kh 라는 문자열로 시작하는지 체크
         boolean isKhToken = token.startsWith("kh");
         if(!isKhToken){
@@ -52,7 +54,26 @@ public class TokenCheckFilter implements Filter {
         if(no.length() < 1 || nick.length() < 1){
             throw new  IllegalStateException("토큰 데이터 오류2");
         }
+
+        // 유효성 검증
+        boolean isMatch = encoder.matches(no + nick + "dlrjsskaksdksmsrkqt",encodeDate);
+        if(!isMatch){
+            throw new IllegalStateException("토큰 유효성 검사 실패");
+        }
+        */
         
+        // 토큰(jwt) 존재여부 검증
+//        boolean isExist = jwtUtil.checkToken(token);
+        
+        // 토큰(jwt) 만료여부 검증
+        if(jwtUtil.isExpire(token)){
+            throw new IllegalStateException("토큰 기간 만료");
+        };
+        
+        // 토큰(jwt)에서 데이터 꺼내기
+        Long no = jwtUtil.getNo(token);
+        String nick = jwtUtil.getNick(token);
+
         // 검증 성공한 데이터 저장
         System.out.println("Token 검증 성공!!");
         System.out.println("no = " + no);
@@ -60,12 +81,6 @@ public class TokenCheckFilter implements Filter {
         MemberVo vo =  new MemberVo();
         vo.setNo(Long.valueOf(no));
         vo.setNick(nick);
-
-        // 유효성 검증
-        boolean isMatch = encoder.matches(no + nick + "dlrjsskaksdksmsrkqt",encodeDate);
-        if(!isMatch){
-            throw new IllegalStateException("토큰 유효성 검사 실패");
-        }
 
         // 임시 세션 생성
         HttpSession session = req.getSession();
