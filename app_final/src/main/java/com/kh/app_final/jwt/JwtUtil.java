@@ -20,11 +20,12 @@ public class JwtUtil {
     }
 
     // 토큰 생성
-    public String createJwtToken(String  id, String nick, String role){
+    public String createJwtToken(Long no,String  id, String nick, String role){
 
         long expired = 1000*60*15;
 
         return Jwts.builder()
+                .claim("no",no)
                 .claim("id",id)
                 .claim("nick",nick)
                 .claim("role",role)

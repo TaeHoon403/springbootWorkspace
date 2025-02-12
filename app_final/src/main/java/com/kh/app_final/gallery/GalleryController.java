@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -32,10 +29,10 @@ public class GalleryController {
     
     // 갤러리 목록 조회
     @GetMapping("list")
-    public ResponseEntity<List<GalleryVo>> findAll(){
+    public ResponseEntity<List<GalleryVo>> findAll(@RequestParam(defaultValue = "1")int pno){
 
         try {
-            List<GalleryVo> result = service.findAll();
+            List<GalleryVo> result = service.findAll(pno);
             return ResponseEntity.status(200).body(result);
         }catch (Exception e){
             log.error(e.getMessage());
@@ -45,7 +42,7 @@ public class GalleryController {
     }//findAll
 
     // 갤러리 파일 추가
-    @PostMapping("insert")
+    @PostMapping("write")
     public void  write(MultipartFile f,GalleryVo vo) throws IOException {
 
         try {
@@ -53,15 +50,13 @@ public class GalleryController {
             vo.setFileUrl(FileUtil.uploadFileToAwsS3(f,s3,bucket));
             vo.setOriginName(f.getOriginalFilename()); // 원본 파일명 설정
 
+            // service 호출
             service.write(vo);
-
         }catch (Exception e){
             log.error(e.getMessage());
             throw new IllegalStateException("[GALLERY-WRITE] 갤러리 파일 업로드 실패");
         }
 
-
     }//insert
-
 
 }//class

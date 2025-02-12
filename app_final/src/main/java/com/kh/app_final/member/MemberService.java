@@ -41,7 +41,7 @@ public class MemberService {
         }
         
         // 토큰 반환
-        return jwtUtil.createJwtToken(dbVo.getId(),dbVo.getNick(),"user");
+        return jwtUtil.createJwtToken(dbVo.getNo(),dbVo.getId(),dbVo.getNick(),"user");
 
     }//login
 

@@ -22,8 +22,10 @@ public interface GalleryMapper {
             , DEL_YN
             FROM GALLERY
             WHERE DEL_YN ='N'
+            ORDER BY NO DESC
+            OFFSET #{offSet} ROWS FETCH NEXT #{limit} ROWS ONLY
             """)
-    List<GalleryVo> findAll();
+    List<GalleryVo> findAll(int offSet,int limit);
     
     // 갤러리 파일 추가
     @Insert("""
@@ -44,6 +46,6 @@ public interface GalleryMapper {
             , #{fileUrl}
             )
             """)
-    void insert(GalleryVo vo);
+    void write(GalleryVo vo);
 
 }//class
