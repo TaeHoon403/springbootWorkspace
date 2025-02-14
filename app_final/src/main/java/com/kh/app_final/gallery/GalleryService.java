@@ -26,4 +26,9 @@ public class GalleryService {
         mapper.write(vo);
     }//write
 
+    // 갤러리 상세 조회
+    public GalleryVo getGalleryVoByNo(String no) {
+        return mapper.getGalleryVoByNo(no);
+    }//getGalleryVoByNo
+    
 }//class

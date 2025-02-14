@@ -48,4 +48,21 @@ public interface GalleryMapper {
             """)
     void write(GalleryVo vo);
 
+    // 갤러리 상세 조회
+    @Select("""
+            SELECT
+            NO
+            , WRITER_NO
+            , TITLE
+            , CONTENT
+            , ENROLL_DATE
+            , ORIGIN_NAME
+            , FILE_URL
+            , DEL_YN
+            FROM GALLERY
+            WHERE NO = #{no}
+            AND DEL_YN ='N'
+            """)
+    GalleryVo getGalleryVoByNo(String no);
+    
 }//class

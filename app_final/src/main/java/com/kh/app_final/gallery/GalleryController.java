@@ -29,7 +29,7 @@ public class GalleryController {
     
     // 갤러리 목록 조회
     @GetMapping("list")
-    public ResponseEntity<List<GalleryVo>> findAll(@RequestParam(defaultValue = "1")int pno){
+    public ResponseEntity<List<GalleryVo>> findAll(@RequestParam(defaultValue = "1")int pno) {
 
         try {
             List<GalleryVo> result = service.findAll(pno);
@@ -40,6 +40,20 @@ public class GalleryController {
         }
 
     }//findAll
+
+    // 갤러리 상세 조회
+    @GetMapping("detail/{no}")
+    public GalleryVo getGalleryVoByNo(@PathVariable("no") String no){
+
+        try {
+            return service.getGalleryVoByNo(no);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            throw new IllegalStateException("[GALLERY-DETAIL] 갤러리 상세 조회 실패");
+        }
+
+    }//getGalleryVoByNo
+
 
     // 갤러리 파일 추가
     @PostMapping("write")
