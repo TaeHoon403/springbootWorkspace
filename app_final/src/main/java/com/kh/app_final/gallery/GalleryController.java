@@ -1,17 +1,21 @@
 package com.kh.app_final.gallery;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.kh.app_final.jwt.JwtUtil;
+import com.kh.app_final.member.MemberVo;
+import com.kh.app_final.security.KhUserDetails;
 import com.kh.app_final.util.FileUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
 @RestController
@@ -21,6 +25,8 @@ import java.util.List;
 public class GalleryController {
 
     private final GalleryService service;
+
+    private final JwtUtil jwtUtil;
 
     private final AmazonS3 s3;
     // bucket 명 가져오기
@@ -54,10 +60,17 @@ public class GalleryController {
 
     }//getGalleryVoByNo
 
-
     // 갤러리 파일 추가
     @PostMapping("write")
-    public void  write(MultipartFile f,GalleryVo vo) throws IOException {
+    public void  write(HttpServletRequest req, MultipartFile f, GalleryVo vo,HttpSession session) throws IOException {
+
+        /* // session 에서 작성자 정보 수집
+        MemberVo loginMemberVo = (MemberVo) session.getAttribute("loginMemberVo");
+        vo.setWriterNo(loginMemberVo.getNo()); */
+        // KhUserDetails 에서 작성자 정보 수집
+        KhUserDetails khUserDetails = (KhUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long writerNo = khUserDetails.getNo();
+        vo.setWriterNo(writerNo);
 
         try {
             // aws 서버에 파일 업로드 및 파일 url 설정
