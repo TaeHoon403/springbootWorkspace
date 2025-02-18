@@ -21,7 +21,7 @@ public class BeanConfig {
         return new BCryptPasswordEncoder();
     }//bCryptPasswordEncoder
     
-    // 로그인 여부 검증 filter 등록
+    /* // 로그인 여부 검증 filter 등록
     @Bean
     public FilterRegistrationBean filterRegistrationBean(){
 
@@ -30,6 +30,6 @@ public class BeanConfig {
         filter.setOrder(1); // 동작 순위 1순위
         return filter;
 
-    }//filterRegistrationBean
+    }//filterRegistrationBean */
     
 }//class
