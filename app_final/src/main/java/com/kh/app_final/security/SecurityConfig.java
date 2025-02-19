@@ -27,7 +27,9 @@ public class SecurityConfig {
         // 모든 요청 통과 시키기
         httpSecurity.authorizeHttpRequests(
                 auth -> auth
-                        .requestMatchers("/","/home","api/member/join","api/member/login","api/gallery/list","api/gallery/detail/*").permitAll() // 해당 경로의 경우 인증 없이 통과
+                        .requestMatchers("/","/home","api/member/join","api/member/login").permitAll() // 해당 경로의 경우 인증 없이 통과
+                        .requestMatchers("api/gallery/list","api/gallery/detail/*").permitAll() // 해당 경로의 경우 인증 없이 통과
+                        .requestMatchers("/api/admin/login").permitAll() // 해당 경로의 경우 인증 없이 통과
                         .requestMatchers("/admin/*").hasRole("ADMIN") // admin 관련 요청은 ADMIN 권한을 가져야 통과
                         .anyRequest().authenticated() // 그 외 모든 요청은 인증 되어야 통과
         );
