@@ -1,6 +1,7 @@
 package com.kh.app_final.gallery;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.kh.app_final.common.util.PageVo;
 import com.kh.app_final.jwt.JwtUtil;
 import com.kh.app_final.member.MemberVo;
 import com.kh.app_final.security.KhUserDetails;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,11 +38,20 @@ public class GalleryController {
     
     // 갤러리 목록 조회
     @GetMapping("list")
-    public ResponseEntity<List<GalleryVo>> findAll(@RequestParam(defaultValue = "1")int pno) {
-
+    public ResponseEntity<Map<String,Object>> findAll(@RequestParam(defaultValue = "1")int pno) {
+        
+        // 갤러리 페이지 수 객체 생성
+        int listCnt = service.getListCount(); // 총 갤러리 데이터 개수
+        int pageLimit = 5;
+        int boardLimit = 10;
+        PageVo pageVo = new PageVo(listCnt , pno , pageLimit , boardLimit);
+        
         try {
-            List<GalleryVo> result = service.findAll(pno);
-            return ResponseEntity.status(200).body(result);
+            List<GalleryVo> result = service.findAll(pageVo);
+            Map<String, Object> map = new HashMap<>();
+            map.put("galleryVoList" , result);
+            map.put("pageVo", pageVo);
+            return ResponseEntity.status(200).body(map);
         }catch (Exception e){
             log.error(e.getMessage());
             throw new IllegalStateException("[GALLERY-LIST] 갤러리 목록 조회 실패");

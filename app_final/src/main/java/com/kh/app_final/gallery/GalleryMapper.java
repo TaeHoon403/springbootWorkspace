@@ -64,5 +64,14 @@ public interface GalleryMapper {
             AND DEL_YN ='N'
             """)
     GalleryVo getGalleryVoByNo(String no);
-    
+
+    // 갤러리 페이지 수 조회
+    @Select("""
+            SELECT 
+            COUNT(NO)
+            FROM GALLERY
+            WHERE DEL_YN = 'N'
+            """)
+    int getListCount();
+
 }//class
