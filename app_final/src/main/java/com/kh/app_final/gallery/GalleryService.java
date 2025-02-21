@@ -36,4 +36,9 @@ public class GalleryService {
         return mapper.getListCount();
     }//getPageCount
 
+    // 갤러리 삭제
+    public void delete(Long no) {
+        mapper.delete(no);
+    }//delete
+
 }//class

@@ -62,4 +62,12 @@ public class JwtUtil {
                 .get("id", String.class);
     }// getId
 
+    // 토큰에서 데이터 꺼내기 - role
+    public String getRole(String token){
+        return Jwts.parser().verifyWith(secretKey).build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("role", String.class);
+    }// getRole
+
 }//class

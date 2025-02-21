@@ -37,6 +37,7 @@ public class JwtFilter extends OncePerRequestFilter {
         // 1. 토큰 만료 여부 검증
         if(jwtUtil.isExpired(token)){
             log.warn("token is expired");
+            filterChain.doFilter(request,response);
             return;
         }
 
@@ -44,7 +45,9 @@ public class JwtFilter extends OncePerRequestFilter {
         Long no = jwtUtil.getNo(token);
         // 토큰에서 데이터 꺼내기 - id
         String id = jwtUtil.getId(token);
-    
+        // 토큰에서 데이터 꺼내기 - role
+        String role = jwtUtil.getRole(token);
+
         // 꺼낸 데이터 객체로 저장
         MemberVo vo = new MemberVo();
         vo.setId(id);
@@ -55,7 +58,7 @@ public class JwtFilter extends OncePerRequestFilter {
         session.setAttribute("loginMemberVo",vo); */
 
         // JWT 를 기반으로 인증 처리
-        KhUserDetails khUserDetails = new KhUserDetails(vo,"USER");
+        KhUserDetails khUserDetails = new KhUserDetails(vo,role);
         Authentication authToken = new UsernamePasswordAuthenticationToken(khUserDetails,null,khUserDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authToken);
 

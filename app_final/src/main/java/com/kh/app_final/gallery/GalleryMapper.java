@@ -3,6 +3,7 @@ package com.kh.app_final.gallery;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -74,4 +75,13 @@ public interface GalleryMapper {
             """)
     int getListCount();
 
+    // 갤러리 삭제
+    @Update("""
+            UPDATE GALLERY
+            SET
+                DEL_YN = 'Y'
+            WHERE NO = #{no}
+            """)
+    void delete(Long no);
+    
 }//class

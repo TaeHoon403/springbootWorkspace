@@ -13,6 +13,7 @@ public class AdminController {
 
     private final AdminService adminService;
 
+    // 관리자 로그인
     @PostMapping("login")
     public String login(@RequestBody AdminVo vo){
         try{
@@ -20,6 +21,6 @@ public class AdminController {
         }catch(Exception e){
             throw new IllegalStateException("[ADMIN-LOGIN] LOGIN FAIL ...");
         }
-    }
+    }//login
 
-}
+}//class
