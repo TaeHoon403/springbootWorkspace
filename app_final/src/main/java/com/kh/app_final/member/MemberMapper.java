@@ -11,13 +11,15 @@ public interface MemberMapper {
     @Insert("""
             INSERT INTO MEMBER
             (
-                ID
+                NO
+                , ID
                 , PWD
                 , NICK
             )
             VALUES
             (
-                #{id}
+                SEQ_MEMBER.NEXTVAL
+                , #{id}
                 , #{pwd}
                 , #{nick}
             )

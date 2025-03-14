@@ -11,28 +11,60 @@ import java.util.List;
 public interface GalleryMapper {
 
     // 갤러리 목록 조회
+//    @Select("""
+//            SELECT
+//            NO
+//            , WRITER_NO
+//            , TITLE
+//            , CONTENT
+//            , ENROLL_DATE
+//            , ORIGIN_NAME
+//            , FILE_URL
+//            , DEL_YN
+//            FROM GALLERY
+//            WHERE DEL_YN ='N'
+//            ORDER BY NO DESC
+//            OFFSET #{offSet} ROWS FETCH NEXT #{limit} ROWS ONLY
+//            """)
     @Select("""
-            SELECT
-            NO
-            , WRITER_NO
-            , TITLE
-            , CONTENT
-            , ENROLL_DATE
-            , ORIGIN_NAME
-            , FILE_URL
-            , DEL_YN
-            FROM GALLERY
-            WHERE DEL_YN ='N'
-            ORDER BY NO DESC
-            OFFSET #{offSet} ROWS FETCH NEXT #{limit} ROWS ONLY
+            SELECT *
+                        FROM (
+                            SELECT
+                                NO,
+                                WRITER_NO,
+                                TITLE,
+                                CONTENT,
+                                ENROLL_DATE,
+                                ORIGIN_NAME,
+                                FILE_URL,
+                                DEL_YN,
+                                ROWNUM AS RNUM
+                            FROM (
+                                SELECT
+                                    NO,
+                                    WRITER_NO,
+                                    TITLE,
+                                    CONTENT,
+                                    ENROLL_DATE,
+                                    ORIGIN_NAME,
+                                    FILE_URL,
+                                    DEL_YN
+                                FROM GALLERY
+                                WHERE DEL_YN = 'N'
+                                ORDER BY NO DESC
+                            )
+                            WHERE ROWNUM <= #{offset} + #{limit}
+                        )
+                        WHERE RNUM > #{offset}
             """)
-    List<GalleryVo> findAll(int offSet,int limit);
+    List<GalleryVo> findAll(int offset,int limit);
     
     // 갤러리 파일 추가
     @Insert("""
             INSERT INTO GALLERY
             (
-            WRITER_NO
+            NO
+            , WRITER_NO
             , TITLE
             , CONTENT
             , ORIGIN_NAME
@@ -40,7 +72,8 @@ public interface GalleryMapper {
             )
             VALUES
             (
-            #{writerNo}
+            SEQ_GALLERY.NEXTVAL
+            , #{writerNo}
             , #{title}
             , #{content}
             , #{originName}
